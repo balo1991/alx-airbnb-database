@@ -1,10 +1,17 @@
+<img width="1245" height="522" alt="image" src="https://github.com/user-attachments/assets/12760da3-6c44-4d77-97e2-b42713313883" />
 The ER Diagram based on these specification
+
 Entities and Attributes
 User
+
 user_id: Primary Key, UUID, Indexed
+
 first_name: VARCHAR, NOT NULL
+
 last_name: VARCHAR, NOT NULL
+
 email: VARCHAR, UNIQUE, NOT NULL
+
 password_hash: VARCHAR, NOT NULL
 phone_number: VARCHAR, NULL
 role: ENUM (guest, host, admin), NOT NULL
@@ -71,5 +78,5 @@ property_id in the Property and Booking tables.
 booking_id in the Booking and Payment tables.
 
 
-<img width="1245" height="522" alt="image" src="https://github.com/user-attachments/assets/12760da3-6c44-4d77-97e2-b42713313883" />
+
 
