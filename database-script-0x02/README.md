@@ -50,4 +50,18 @@ mysql -u <username> -p <database> < sample_data.sql
 
 ## Notes
 - UUIDs are used as unique identifiers for all records.  
-- The data is for **testing and development purposes only**, not production.  
+- The data is for **testing and development purposes only**, not production.
+
+This script covers:
+
+4 Users (guest, host, guest, admin)
+
+2 Properties hosted by Bob
+
+2 Bookings (1 confirmed, 1 pending)
+
+2 Payments (one full, one partial)
+
+2 Reviews from guests
+
+2 Messages (guest ↔ host conversation)
