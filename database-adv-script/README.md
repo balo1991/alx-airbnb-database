@@ -28,9 +28,9 @@ SELECT
 FROM bookings b
 INNER JOIN users u ON b.user_id = u.id;
 
-
-**### 2.LEFT JOIN
-Retrieves all properties and their reviews, including properties without reviews.**
+```sql
+### 2.  LEFT JOIN
+Retrieves all properties and their reviews, including properties without reviews.
 
 SELECT 
     p.id AS property_id,
