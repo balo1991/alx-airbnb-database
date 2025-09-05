@@ -116,7 +116,7 @@ ORDER BY u.id;
 
 # Aggregation & Window Functions (Airbnb Clone Database)
 
-This module demonstrates how to use **aggregation (COUNT, GROUP BY)** and **window functions (RANK)** to analyze data in the Airbnb clone database.
+This module demonstrates **aggregation** and **window functions (ROW_NUMBER, RANK)** to analyze data in the Airbnb clone database.
 
 ---
 
@@ -133,40 +133,53 @@ FROM users u
 LEFT JOIN bookings b ON u.id = b.user_id
 GROUP BY u.id, u.first_name, u.last_name
 ORDER BY total_bookings DESC;
+2a. Window Function: ROW_NUMBER
+Query: Assign a unique rank to each property based on bookings.
 
-✅ Explanation:
-
-COUNT(b.id) counts the number of bookings for each user.
-
-LEFT JOIN ensures users with 0 bookings are also included.
-
-Ordered by the highest number of bookings.
-
-2. Window Function: Ranking Properties
-
-Query: Rank properties based on the total number of bookings they have received.
-
+sql
+Copy code
 SELECT 
     p.id AS property_id,
     p.title,
     COUNT(b.id) AS total_bookings,
-    RANK() OVER (ORDER BY COUNT(b.id) DESC) AS property_rank
+    ROW_NUMBER() OVER (ORDER BY COUNT(b.id) DESC) AS row_number_rank
 FROM properties p
 LEFT JOIN bookings b ON p.id = b.property_id
 GROUP BY p.id, p.title
-ORDER BY property_rank;
+ORDER BY row_number_rank;
+✅ ROW_NUMBER Explanation:
 
+Assigns a unique sequential number per property.
 
-✅ Explanation:
+Ties get different numbers (no duplicates).
 
-COUNT(b.id) gets the total bookings per property.
+2b. Window Function: RANK
+Query: Assign ranks with ties to properties based on bookings.
 
-RANK() OVER (ORDER BY COUNT(b.id) DESC) assigns a rank:
+sql
+Copy code
+SELECT 
+    p.id AS property_id,
+    p.title,
+    COUNT(b.id) AS total_bookings,
+    RANK() OVER (ORDER BY COUNT(b.id) DESC) AS rank_rank
+FROM properties p
+LEFT JOIN bookings b ON p.id = b.property_id
+GROUP BY p.id, p.title
+ORDER BY rank_rank;
+✅ RANK Explanation:
 
-Most booked property → Rank 1
+Properties with the same number of bookings share the same rank.
 
-Handles ties (same number of bookings = same rank).
+Numbers are skipped after ties (e.g., 1, 1, 3).
 
+Directory Structure
+pgsql
+Copy code
+alx-airbnb-database/
+└── database-adv-script/
+    ├── aggregations_and_window_functions.sql
+    └── README.md
 Directory Structure
 alx-airbnb-database/
 └── database-adv-script/
