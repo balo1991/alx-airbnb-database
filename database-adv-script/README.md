@@ -114,3 +114,74 @@ WHERE (
 ) > 3
 ORDER BY u.id;
 
+# Aggregation & Window Functions (Airbnb Clone Database)
+
+This module demonstrates how to use **aggregation (COUNT, GROUP BY)** and **window functions (RANK)** to analyze data in the Airbnb clone database.
+
+---
+
+## 1. Aggregation: Total Bookings Per User
+**Query:** Find the total number of bookings made by each user.
+
+```sql
+SELECT 
+    u.id AS user_id,
+    u.first_name,
+    u.last_name,
+    COUNT(b.id) AS total_bookings
+FROM users u
+LEFT JOIN bookings b ON u.id = b.user_id
+GROUP BY u.id, u.first_name, u.last_name
+ORDER BY total_bookings DESC;
+
+✅ Explanation:
+
+COUNT(b.id) counts the number of bookings for each user.
+
+LEFT JOIN ensures users with 0 bookings are also included.
+
+Ordered by the highest number of bookings.
+
+2. Window Function: Ranking Properties
+
+Query: Rank properties based on the total number of bookings they have received.
+
+SELECT 
+    p.id AS property_id,
+    p.title,
+    COUNT(b.id) AS total_bookings,
+    RANK() OVER (ORDER BY COUNT(b.id) DESC) AS property_rank
+FROM properties p
+LEFT JOIN bookings b ON p.id = b.property_id
+GROUP BY p.id, p.title
+ORDER BY property_rank;
+
+
+✅ Explanation:
+
+COUNT(b.id) gets the total bookings per property.
+
+RANK() OVER (ORDER BY COUNT(b.id) DESC) assigns a rank:
+
+Most booked property → Rank 1
+
+Handles ties (same number of bookings = same rank).
+
+Directory Structure
+alx-airbnb-database/
+└── database-adv-script/
+    ├── aggregation_window.sql
+    └── README.md
+
+Usage
+
+Run in PostgreSQL or MySQL:
+
+psql -d airbnb_clone -f database-adv-script/aggregation_window.sql
+
+
+or
+
+mysql airbnb_clone < database-adv-script/aggregation_window.sql
+
+
