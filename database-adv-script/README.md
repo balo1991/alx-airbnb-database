@@ -73,3 +73,44 @@ properties
 bookings
 
 reviews
+
+
+# Subqueries in SQL (Airbnb Clone Database)
+
+This module demonstrates the use of **non-correlated** and **correlated subqueries** on the Airbnb clone database.
+
+---
+
+## 1. Non-Correlated Subquery
+**Query:** Find all properties where the average rating is greater than 4.0.
+
+```sql
+SELECT 
+    p.id AS property_id,
+    p.title,
+    p.location
+FROM properties p
+WHERE p.id IN (
+    SELECT r.property_id
+    FROM reviews r
+    GROUP BY r.property_id
+    HAVING AVG(r.rating) > 4.0
+)
+ORDER BY p.id;
+
+**2. Correlated Subquery
+Query: Find users who have made more than 3 bookings.**
+
+SELECT 
+    u.id AS user_id,
+    u.first_name,
+    u.last_name,
+    u.email
+FROM users u
+WHERE (
+    SELECT COUNT(*)
+    FROM bookings b
+    WHERE b.user_id = u.id
+) > 3
+ORDER BY u.id;
+
